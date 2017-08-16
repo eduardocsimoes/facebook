@@ -114,10 +114,18 @@
 			$array = array();
 			$meuId = $_SESSION['lgsocial'];
 
+			$r = new Relacionamentos();
+			$ids = $r->getIdsFriends($meuId);
+
+			if(count($ids) == 0){
+				$ids[] = $meuId;
+			}
+
 			$sql = "SELECT usuarios.id,
 						   usuarios.nome
 					  FROM usuarios
 					 WHERE usuarios.id != :meuId
+					   AND usuarios.id NOT IN (".implode(',', $ids).")
 				 	 ORDER BY RAND()
 					 LIMIT $limit";
 
