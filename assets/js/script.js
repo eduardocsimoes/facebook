@@ -54,7 +54,14 @@ function curtir(obj){
 
 function displayComentario(obj){
 
-	$(obj).closest('.postitem_botoes').find('.postitem_comentario').show();
+	var comentarioEstaExibido = $(obj).closest('.postitem_botoes').find('.postitem_comentario').is(":visible");
+
+	if(comentarioEstaExibido == true){
+		$(obj).closest('.postitem_botoes').find('.postitem_comentario').hide();	
+	}else{
+		$(obj).closest('.postitem_botoes').find('.postitem_comentario').show();
+	}
+	
 }
 
 function comentar(obj){

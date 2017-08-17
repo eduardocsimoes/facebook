@@ -1,7 +1,7 @@
 <?php
 class Posts extends model {
 
-	public function addPosts($msg, $foto) {
+	public function addPosts($msg, $foto, $grupo = 0) {
 
 		$usuario = $_SESSION['lgsocial'];
 		$tipo    = 'texto';
@@ -28,17 +28,18 @@ class Posts extends model {
 			}
 		}
 
-		$sql = "INSERT INTO posts SET id_usuario = :id, data_criacao = NOW(), tipo = :tipo, texto = :msg, url = :url, id_grupo = 0";
+		$sql = "INSERT INTO posts SET id_usuario = :id, data_criacao = NOW(), tipo = :tipo, texto = :msg, url = :url, id_grupo = :grupo";
 		$sql = $this->db->prepare($sql);
 
 		$sql->bindValue(":id", $usuario);
 		$sql->bindValue(":msg", $msg);
 		$sql->bindValue(":tipo", $tipo);
 		$sql->bindValue(":url", $url);
+		$sql->bindValue(":grupo", $grupo);
 		$sql->execute();
 	}
 
-	public function getFeed() {
+	public function getFeed($id_grupo = 0) {
 
 		$array = array();
 
@@ -50,8 +51,9 @@ class Posts extends model {
 						   (SELECT usuarios.nome FROM usuarios WHERE usuarios.id = posts.id_usuario) as nome,
 						   (SELECT count(*) FROM posts_likes WHERE posts_likes.id_post = posts.id) as likes,
 						   (SELECT count(*) FROM posts_likes WHERE posts_likes.id_post = posts.id AND posts_likes.id_usuario = ".$_SESSION['lgsocial'].") as liked
-					FROM posts WHERE id_usuario IN (".implode(',', $ids).") ORDER BY data_criacao DESC";
+					FROM posts WHERE id_usuario IN (".implode(',', $ids).") AND id_grupo = :id_grupo ORDER BY data_criacao DESC";
 		$sql = $this->db->prepare($sql);
+		$sql->bindValue(":id_grupo", $id_grupo);
 		$sql->execute();
 
 		if ($sql->rowCount() > 0) {

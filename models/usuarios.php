@@ -140,5 +140,24 @@
 			
 			return $array;
 		}
+
+		public function procurar($q){
+
+			$array = array();
+
+			$q = addslashes($q);
+
+			$sql = "SELECT * FROM usuarios WHERE nome LIKE '%".$q."%'";
+			$sql = $this->db->prepare($sql);
+
+			$sql->execute();
+
+			if($sql->rowCount()){
+
+				$array = $sql->fetchAll();
+			}
+
+			return $array;
+		}
 	}
  ?>

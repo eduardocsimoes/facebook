@@ -1,14 +1,14 @@
 <div class="postitem">
+	<div class="postitem_info">
+		<strong>Post de:</strong> <?php echo $nome; ?>
+	</div>
+
 	<?php if($tipo == 'foto'){ ?>
 		<img src="<?php echo BASE_URL; ?>assets/images/posts/<?php echo $url; ?>" alt="" border="0" width="100%">
 	<?php } ?>
 
 	<div class="postitem_texto">
 		<?php echo $texto; ?>
-	</div>
-
-	<div class="postitem_info">
-		<strong>Post de:</strong> <?php echo $nome; ?>
 	</div>
 
 	<div class="postitem_botoes">
@@ -28,9 +28,11 @@
 		<h6><strong>Comentários</strong></h6><br>
 		<?php foreach($comentarios as $value){ ?>
 			<p><strong><?php echo $value['nome']; ?>: </strong><?php echo $value['texto']; ?></p><br>
-		<?php			
-			}	
+		<?php
+			}
+		?>	
+	</div>	
+	<?php
 		}  
 	?>
-	</div>
 </div>

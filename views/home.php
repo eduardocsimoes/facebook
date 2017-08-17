@@ -48,5 +48,20 @@
 		</div>
 		<?php } ?>
 
+		<div class="widget">
+			<h4>Grupos</h4>
+			<form method="POST">
+				<div class="input-group">
+					<input type="text" name="grupo" class="form-control" placeholder="Nome do grupo">
+					<span class="input-group-btn">
+						<input type="submit" value="Criar" class="btn btn-default">
+					</span>
+				</div>
+			</form>
+
+			<?php foreach($grupos as $grupo){ ?>
+				<a href="<?php echo BASE_URL; ?>grupos/abrir/<?php echo $grupo['id']; ?>"><?php echo $grupo['titulo']; ?></a><br>
+			<?php } ?>
+		</div>
 	</div>
 </div>

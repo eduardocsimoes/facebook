@@ -114,10 +114,18 @@ class Usuarios extends model {
 		$array = array();
 		$meuId = $_SESSION['lgsocial'];
 
+		$r   = new Relacionamentos();
+		$ids = $r->getIdsFriends($meuId);
+
+		if (count($ids) == 0) {
+			$ids[] = $meuId;
+		}
+
 		$sql = "SELECT usuarios.id,
 						   usuarios.nome
 					  FROM usuarios
 					 WHERE usuarios.id != :meuId
+					   AND usuarios.id NOT IN (".implode(',', $ids).")
 				 	 ORDER BY RAND()
 					 LIMIT $limit";
 
@@ -127,6 +135,25 @@ class Usuarios extends model {
 		$sql->execute();
 
 		if ($sql->rowCount() > 0) {
+			$array = $sql->fetchAll();
+		}
+
+		return $array;
+	}
+
+	public function procurar($q) {
+
+		$array = array();
+
+		$q = addslashes($q);
+
+		$sql = "SELECT * FROM usuarios WHERE nome LIKE '%".$q."%'";
+		$sql = $this->db->prepare($sql);
+
+		$sql->execute();
+
+		if ($sql->rowCount()) {
+
 			$array = $sql->fetchAll();
 		}
 
